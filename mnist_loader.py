@@ -38,7 +38,7 @@ def load_data():
     to modify the format of the ''training_data'' a little. That's done in 
     wrapper function ''load_data_wrapper()'', see below.
     """
-    f = gzip.open('./data/mnist.pkl.gz','rb')
+    f = gzip.open('data/mnist.pkl.gz','rb')
     training_data, validation_data, test_data = cPickle.load(f)
     f.close()
     return (training_data, validation_data, test_data)
@@ -66,7 +66,7 @@ def load_data_wrapper():
 
     tr_d, va_d, te_d = load_data()
     training_inputs = [np.reshape(x, (784, 1)) for x in tr_d[0]]
-    training_results = [vectorized_result(y) for u in tr_d[1]]
+    training_results = [vectorized_result(y) for y in tr_d[1]]
     training_data = zip(training_inputs, training_results)
     validation_inputs = [np.reshape(x, (784, 1)) for x in va_d[0]]
     validation_data = zip(validation_inputs, va_d[1])

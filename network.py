@@ -91,6 +91,7 @@ class Network(object):
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
         # feedforward
+        print x.shape
         activation = x
         activations = [x]  # list to store al the activations, layer by layer
         zs = []  # list to store all the z vectors, layer by layer
@@ -100,17 +101,16 @@ class Network(object):
             activation = sigmoid(z)
             activations.append(activation)
         # backward pass
-        delta = self.cost_derivative(
-            activations[-1], y) * sigmoid_prime(zs[-1])
+        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
 
         for l in xrange(2, self.num_layers):
-            z = zs[-1]
+            z = zs[-l]
             sp = sigmoid_prime(z)
-            delta = np.dot(self.weights[-1 + 1].transpose(), delta) * sp
-            nabla_b[-1] = delta
-            nabla_w[-1] = np.dot(delta, activations[-1 - 1].transpose())
+            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
+            nabla_b[-l] = delta
+            nabla_w[-l] = np.dot(delta, activations[-l - 1].transpose())
         return (nabla_b, nabla_w)
 
     def evaluate(self, test_data):
